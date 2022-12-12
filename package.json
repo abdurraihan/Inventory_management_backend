@@ -2,6 +2,11 @@
   "name": "inventory_management_Backend",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+
+  },
   "license": "MIT",
   "dependencies": {
     "colors": "^1.4.0",
