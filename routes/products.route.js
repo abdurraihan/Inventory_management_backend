@@ -4,19 +4,19 @@ const productController = require('../controllers/products.controllers')
 
 
 productRouter.route("/bulk-update")
-.patch(productController.bulkUpdateProduct)
+    .patch(productController.bulkUpdateProduct)
 
 productRouter.route("/bulk-delete")
-.delete(productController.bulkDelete)
+    .delete(productController.bulkDelete)
 
 productRouter.route('/')
-.get(productController.getProducts)
-.post(productController.createProduct)
+    .get(productController.getProducts)
+    .post(productController.createProduct)
 
 
 
 productRouter.route('/:id')
-.patch(productController.updateProduct)
-.delete(productController.deleteProductById)
+    .patch(productController.updateProduct)
+    .delete(productController.deleteProductById)
 
-module.exports=productRouter; 
+module.exports = productRouter; 
