@@ -1,6 +1,6 @@
 const express = require('express')
 const productRouter = express.Router()
-const productController = require('../controllers/products.controllers')
+const productController = require('../controllers/products.controllers.js')
 
 
 productRouter.route("/bulk-update")

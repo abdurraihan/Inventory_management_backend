@@ -1,4 +1,6 @@
  const mongoose = require("mongoose");
+ const validator = require("validator");
+ const {ObjectId} = mongoose.Schema.Types;
 
 
 
@@ -7,6 +9,7 @@ const productSchema = mongoose.Schema({
     name:{
       type: String,
       required:[true, "please provide a name for this product."],
+      lowercase:true,
       trim: true ,
       unique:[true,"name must be unique"],
       minLength:[3, "Name must be at least 3 characters"],
@@ -18,48 +21,66 @@ const productSchema = mongoose.Schema({
       required: true,
     },
   
-    price:{
-      type: Number,
-      required: true,
-      min: [0, "price can't be negative"]
-    },
+   
   
     unit: {
       type:String,
       required:true,
       //enum: ["kg", "liter" , "pcs"]
       enum:{
-        values:['kg', 'liter' , 'pcs'],
-        message: "unit value can't be {VALUE} , mast be kg/liter/pcs"
+        values:['kg', 'liter' , 'pcs' , 'bag'],
+        message: "unit value can't be {VALUE} , mast be kg/liter/pcs/bag"
       }
     },
   
-    quantity:{
-      type: Number,
-      required: true,
-      min:[0, "quantity can't be negative value"],
-      validate:{
-        validator:(value)=>{
-          const isInteger = Number.isInteger(value);
-          if(isInteger){
-            return true
-          }
-          else{
-            return false
-          }
-        }
-      },
-      message: "Quantity must be an integer"
-    },
+
+    imageURls:[{
+        type: String,
+        required:true,
+        
+        validate:{
+          validator:(value)=>{
+            if(!Array.isArray(value)){
+              return false;
+            }
   
-    status:{
-      type:String,
-      required: true,
-      enum:{ 
-        values:["in-stock" , "out-of-stock" ,"discontinued"],
-        message: "status can't be {VALUE}",
-      } 
-    },
+            let isValid = true;
+  
+            value.forEach(url =>{
+              if(!validator.isURL(url)){
+                isValid = false;
+              }
+            });
+            return isValid;
+          },
+          message: "please provide valid image urls"
+        }
+  
+      }],
+
+      category:{ 
+        type:String,
+        required:true,
+      },
+
+      brand:{
+        name:{
+          type:String,
+          required:true,
+        },
+        id:{
+          type:ObjectId,
+          ref: "Brand",
+          required:true,
+        }
+      }
+
+
+
+    
+    
+
+
   
    /*  createdAt:{
       type: Date,
@@ -71,18 +92,18 @@ const productSchema = mongoose.Schema({
       default:Date.now,
     } */
   
-    supplier:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Supplier"
-    },
+    // supplier:{
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "Supplier"
+    // },
   
-    categories:[{
-      name:{
-        type: String,
-        required:true
-      },
-      _id: mongoose.Schema.Types.ObjectId
-    }]
+    // categories:[{
+    //   name:{
+    //     type: String,
+    //     required:true
+    //   },
+    //   _id: mongoose.Schema.Types.ObjectId
+    // }]
   
   },{
     timestamps:true
